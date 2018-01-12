@@ -17,6 +17,7 @@ module Binance
         def self.extended(base)
           REST.api[:withdraw] = lambda do
             Faraday.new(url: "#{BASE_URL}/wapi") do |conn|
+              conn.ssl.verify = false # not good, but until https://github.com/craysiii/binance/issues/4 is fixed
               conn.request :url_encoded
               conn.response :json, content_type: /\bjson$/
               conn.headers['X-MBX-APIKEY'] = base.api_key

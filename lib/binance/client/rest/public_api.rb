@@ -15,6 +15,7 @@ module Binance
         def self.extended(base)
           REST.api[:public] = lambda do
             Faraday.new(url: "#{BASE_URL}/api") do |conn|
+              conn.ssl.verify = false # not good, but until https://github.com/craysiii/binance/issues/4 is fixed
               conn.request :json
               conn.response :json, content_type: /\bjson$/
               conn.adapter base.adapter
